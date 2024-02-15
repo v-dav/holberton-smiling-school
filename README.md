@@ -6,6 +6,9 @@
 ![Bootstrap Version](https://img.shields.io/badge/Bootstrap-4.4.1-purple?style=for-the-badge&logo=bootstrap&logoColor=white)
 [![Figma](https://img.shields.io/badge/Figma-Design-blue?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/)
 
+![Skärmavbild 2024-02-15 kl  17 00 17](https://github.com/v-dav/holbertonschool-smiling-school-javascript/assets/115344057/496faed7-b0c1-46d2-991a-123bc6ccf80b)
+
+
 ## 🖥️ Project Overview
 
 Welcome to the "Build a Web App with Javascript" project! In this project, you'll leverage all your HTML, CSS, Accessibility, Responsive Design, Bootstrap, and Javascript knowledge to create fully functional web pages that match the designer's file.
