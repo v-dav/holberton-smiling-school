@@ -96,6 +96,15 @@ function processDataVideos(data) {
 	})
 }
 
+function ajaxRequestCourses() {
+
+}
+
+function processDataCourses(data) {
+	
+}
+
 ajaxRequestQuotes();
 ajaxRequestTutorials();
 ajaxRequestVideos();
+ajaxRequestCourses()
