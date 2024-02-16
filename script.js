@@ -17,8 +17,8 @@ function processDataQuotes(data) {
 		let carouselItem = $(carouselItems[index]);
 		carouselItem.find("img").attr("src", item.pic_url);
 		carouselItem.find("p").text(item.text);
-    carouselItem.find("h4").text(item.name);
-    carouselItem.find("span").text(item.title);
+		carouselItem.find("h4").text(item.name);
+		carouselItem.find("span").text(item.title);
 	})
 }
 
@@ -39,7 +39,7 @@ function ajaxRequestTutorials() {
 
 function processDataTutorials(data) {
 	let cards = $('.card');
-	
+
 	$(data).each(function (index, item) {
 		let card = $(cards[index]);
 
@@ -61,4 +61,3 @@ function processDataTutorials(data) {
 
 ajaxRequestQuotes();
 ajaxRequestTutorials();
-
