@@ -22,4 +22,43 @@ function processDataQuotes(data) {
 	})
 }
 
+function ajaxRequestTutorials() {
+	$('#carouselExampleControls2').hide();
+	$('.popular .container .loader').show()
+	$.ajax({
+		url: "https://smileschool-api.hbtn.info/popular-tutorials",
+		method: "GET",
+		dataType: "json",
+		success: function (data) {
+			processDataTutorials(data);
+			$('#carouselExampleControls2').show();
+			$('.popular .container .loader').hide()
+		}
+	})
+}
+
+function processDataTutorials(data) {
+	let cards = $('.card');
+	
+	$(data).each(function (index, item) {
+		let card = $(cards[index]);
+
+		card.find(".card-img-top").attr("src", item.thumb_url)
+		card.find(".card-title").text(item.title)
+		card.find(".card-text").text(item["sub-title"])
+		card.find(".rounded-circle").attr("src", item.author_pic_url)
+		card.find("h6").text(item.author)
+		let rating = card.find("div.rating")
+
+		for (let i = 0; i < item.star; i++) {
+			let starImage = $("<img>", { src: "images/star_on.png", alt: "star on", width: "15px" });
+			rating.append(starImage);
+		}
+
+		card.find("span").text(item.duration);
+	})
+}
+
 ajaxRequestQuotes();
+ajaxRequestTutorials();
+
