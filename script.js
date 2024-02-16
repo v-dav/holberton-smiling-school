@@ -1,17 +1,17 @@
-function ajaxRequest() {
+function ajaxRequestQuotes() {
 	$('.quote-text .loader').show();
 	$.ajax({
 		url: "https://smileschool-api.hbtn.info/quotes",
 		method: "GET",
 		dataType: "json",
 		success: function (data) {
-			processData(data);
+			processDataQuotes(data);
 			$('.quote-text .loader').hide();
 		}
 	})
 }
 
-function processData(data) {
+function processDataQuotes(data) {
 	let carouselItems = $(".carousel-item");
 	$(data).each(function (index, item) {
 		let carouselItem = $(carouselItems[index]);
@@ -22,4 +22,4 @@ function processData(data) {
 	})
 }
 
-ajaxRequest();
+ajaxRequestQuotes();
