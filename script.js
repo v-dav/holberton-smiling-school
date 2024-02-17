@@ -1,3 +1,5 @@
+//------------------------------QUOTES & TUTORIALS------------------------------------//
+
 function ajaxRequestQuotes() {
 	$('.quote-text .loader').show();
 	$.ajax({
@@ -59,6 +61,8 @@ function processDataTutorials(data) {
 	})
 }
 
+//------------------------------VIDEOS------------------------------------//
+
 function ajaxRequestVideos() {
 	$('#carouselExampleControls3').hide();
 	$('.loader-videos').show()
@@ -96,13 +100,71 @@ function processDataVideos(data) {
 	})
 }
 
-function ajaxRequestCourses() {
+//-------------------------------COURSES-----------------------------------//
 
+// Store filter values
+let currentSearchValue = "";
+let currentTopic = "all";
+let currentSortBy = "most_popular";
+
+function ajaxRequestCourses() {
+	// Request parameters
+	const queryParams = {
+		q: currentSearchValue,
+		topic: currentTopic,
+		sort: currentSortBy
+	};
+
+	//Request
+	$.ajax({
+		url: "https://smileschool-api.hbtn.info/courses",
+		method: "GET",
+		dataType: "json",
+		data: queryParams,
+		success: function (data) {
+			// console.log(data);
+			processDataCourses(data);
+			$('.loader-courses').hide()
+		}
+	})
 }
 
 function processDataCourses(data) {
-	
+	let courseCounter = 0;
+	$(data.courses).each((index, course) => {
+		createCourseCard(course.title, course["sub-title"], course.thumb_url, course.author, course.author_pic_url, course.star, course.duration);
+	});
 }
+
+function createCourseCard(title, text, imageUrl, author, authorPicUrl, stars, duration) {
+	// Elements
+	let cardContainer = $("<div>").addClass('col-12 col-sm-4 col-lg-3 d-flex justify-content-center');
+	let cardCourse = $("<div>").addClass("card courses");
+	let cardImage = $("<img>").attr({ 'src': `${imageUrl}`, 'class': 'card-img-top courses', 'alt': 'Video thumbnail' });
+	let cardOverlay = $("<div>").addClass('card-img-overlay text-center').append($('<img>').attr({ 'src': 'images/play.png', 'alt': 'Play', 'width': '64px' }).addClass('align-self-center play-overlay'));
+	let cardBody = $("<div>").addClass("card-body courses");
+	let cardTitle = $("<h5>").addClass("card-title courses font-weight-bold").text(title);
+	let cardText = $("<p>").addClass("card-text courses text-muted").text(text);
+	let cardCreator = $("<div>").addClass("creator d-flex align-items-center").append($("<img>").attr({ 'src': `${authorPicUrl}`, 'alt': 'Creator of video', 'width': "30px" }).addClass("rounded-circle courses"), $("<h6>").addClass("pl-3 m-0 main-color author courses").text(author));
+	let divRatingCourses = $("<div>").addClass("info pt-3 d-flex justify-content-between div-rating-courses").append($("<div>").addClass("rating courses"), $("<span>").addClass("main-color duration courses").text(duration));
+
+	// Organisation
+	cardContainer.append(cardCourse);
+	cardCourse.append(cardImage, cardOverlay, cardBody);
+	cardBody.append(cardTitle, cardText, cardCreator, divRatingCourses);
+
+	//Test append
+	let row = $(".section.results .container .row");
+	row.append(cardContainer);
+
+	//Stars prepend
+	for (let i = 0; i < stars; i++) {
+		let starImage = $("<img>").attr({ 'src': 'images/star_on.png', 'alt': "star on", 'width': "15px" });
+		$('.rating.courses', cardContainer).prepend(starImage);
+	}
+}
+
+//------------------------------CALLS------------------------------------//
 
 ajaxRequestQuotes();
 ajaxRequestTutorials();
