@@ -122,9 +122,12 @@ function ajaxRequestCourses() {
 		dataType: "json",
 		data: queryParams,
 		success: function (data) {
-			// console.log(data);
+			// Display courses
 			processDataCourses(data);
 			$('.loader-courses').hide()
+
+			// Update dropdown menus
+			updateDropdowns(data.topics, data.sorts);
 		}
 	})
 }
@@ -171,6 +174,49 @@ function createCourseCard(title, text, imageUrl, author, authorPicUrl, stars, du
 	}
 }
 
+function updateDropdowns(topics, sorts) {
+	topics.forEach(topic => {
+		let formattedTopic = formatTopicsText(topic)
+		let dropdownItemTopic = $('<a>').attr("href", "#").addClass("dropdown-item").text(formattedTopic);
+		$('.dropdown-menu.topics').append(dropdownItemTopic);
+	});
+
+	sorts.forEach(sort => {
+		let formattedSort = formatSortText(sort)
+		let dropdownItemSort = $('<a>').attr("href", "#").addClass("dropdown-item").text(formattedSort);
+		$('.dropdown-menu.sorts').append(dropdownItemSort);
+	})
+	console.log(topics)
+	console.log(sorts)
+}
+
+function formatSortText(sort) {
+  switch (sort) {
+    case 'most_popular':
+      return 'Most Popular';
+    case 'most_recent':
+      return 'Most Recent';
+    case 'most_viewed':
+      return 'Most Viewed';
+    default:
+      return sort;
+  }
+}
+
+function formatTopicsText(topic) {
+  switch (topic) {
+    case 'all':
+      return 'All';
+    case 'novice':
+      return 'Novice';
+    case 'intermediate':
+			return 'Intermediate';
+			case 'expert':
+				return 'Expert';
+    default:
+      return topic;
+  }
+}
 //------------------------------CALLS------------------------------------//
 
 ajaxRequestQuotes();
