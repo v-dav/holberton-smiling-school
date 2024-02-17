@@ -101,13 +101,27 @@ function processDataVideos(data) {
 }
 
 //-------------------------------COURSES-----------------------------------//
-
-// Store filter values
-let currentSearchValue = "";
-let currentTopic = "all";
-let currentSortBy = "most_popular";
+let topicButton = $('.dropdown .btn.topic-dropdown span');
+let sortsButton = $('.dropdown .btn.sorts-dropdown span');
 
 function ajaxRequestCourses() {
+	// Store filter values
+	let currentSearchValue = $('.search-text-area').val();
+	let currentTopic = $('.topic-dropdown span').text();
+	let currentSortBy = $('.sorts-dropdown span').text();
+
+	if ($('.results .container .row').children().length > 0) {
+		$('.results .container .row').empty();
+	}
+
+	if ($('.dropdown-menu.topics').children().length > 0) {
+		$('.dropdown-menu.topics').empty();
+	}
+
+	if ($('.dropdown-menu.sorts').children().length > 0) {
+		$('.dropdown-menu.sorts').empty();
+	}
+
 	// Request parameters
 	const queryParams = {
 		q: currentSearchValue,
@@ -175,6 +189,9 @@ function createCourseCard(title, text, imageUrl, author, authorPicUrl, stars, du
 }
 
 function updateDropdowns(topics, sorts) {
+	topicButton.text(formatTopicsText(topics[0]));
+	sortsButton.text(formatSortText(sorts[0]));
+
 	topics.forEach(topic => {
 		let formattedTopic = formatTopicsText(topic)
 		let dropdownItemTopic = $('<a>').attr("href", "#").addClass("dropdown-item").text(formattedTopic);
@@ -186,37 +203,60 @@ function updateDropdowns(topics, sorts) {
 		let dropdownItemSort = $('<a>').attr("href", "#").addClass("dropdown-item").text(formattedSort);
 		$('.dropdown-menu.sorts').append(dropdownItemSort);
 	})
-	console.log(topics)
-	console.log(sorts)
 }
 
 function formatSortText(sort) {
-  switch (sort) {
-    case 'most_popular':
-      return 'Most Popular';
-    case 'most_recent':
-      return 'Most Recent';
-    case 'most_viewed':
-      return 'Most Viewed';
-    default:
-      return sort;
-  }
+	switch (sort) {
+		case 'most_popular':
+			return 'Most Popular';
+		case 'most_recent':
+			return 'Most Recent';
+		case 'most_viewed':
+			return 'Most Viewed';
+		default:
+			return sort;
+	}
 }
 
 function formatTopicsText(topic) {
-  switch (topic) {
-    case 'all':
-      return 'All';
-    case 'novice':
-      return 'Novice';
-    case 'intermediate':
+	switch (topic) {
+		case 'all':
+			return 'All';
+		case 'novice':
+			return 'Novice';
+		case 'intermediate':
 			return 'Intermediate';
-			case 'expert':
-				return 'Expert';
-    default:
-      return topic;
-  }
+		case 'expert':
+			return 'Expert';
+		default:
+			return topic;
+	}
 }
+//------------------------------EVENT HANDLERS------------------------------------//
+
+$('.dropdown-menu.topics').on('click', 'a', function () {
+	let selectedTopic = $(this).text();  // Récupérez le texte de l'élément cliqué
+	topicButton.text(selectedTopic);  // Mettez à jour le texte du bouton avec la sélection
+	ajaxRequestCourses();
+});
+
+$('.dropdown-menu.sorts').on('click', 'a', function () {
+	let selectedSort = $(this).text();  // Récupérez le texte de l'élément cliqué
+	sortsButton.text(selectedSort);  // Mettez à jour le texte du bouton avec la sélection
+	ajaxRequestCourses();
+});
+
+$('.search-text-area').on('input', function () {
+	ajaxRequestCourses();
+});
+
+// Gestionnaire d'événements pour la touche "Enter" dans la valeur de recherche
+$('.search-text-area').on('keyup', function(event) {
+    if (event.key === 'Enter') {
+        ajaxRequestCourses();
+    }
+});
+
 //------------------------------CALLS------------------------------------//
 
 ajaxRequestQuotes();
