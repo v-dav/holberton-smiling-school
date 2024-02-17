@@ -133,7 +133,14 @@ function processDataCourses(data) {
 	let courseCounter = 0;
 	$(data.courses).each((index, course) => {
 		createCourseCard(course.title, course["sub-title"], course.thumb_url, course.author, course.author_pic_url, course.star, course.duration);
+		courseCounter++;
 	});
+	let s = '';
+	if (courseCounter > 1) {
+		s = 's';
+	}
+	let textVideoCount = `${courseCounter} video${s}`
+	$("span.video-count").text(textVideoCount);
 }
 
 function createCourseCard(title, text, imageUrl, author, authorPicUrl, stars, duration) {
